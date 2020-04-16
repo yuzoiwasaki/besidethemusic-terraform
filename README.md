@@ -1,5 +1,4 @@
 # besidethemusic-terraform
-[besidethemudsic.tokyo](besidethemudsic.tokyo)のTerraformです。
 
 ## Setup
 ```sh
