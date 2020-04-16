@@ -15,35 +15,35 @@ variable "s3_app" {
   }
 }
 
-# data "aws_iam_policy_document" "s3_app" {
-#   statement {
-#     actions = ["s3:GetObject"]
-#     resources = ["arn:aws:s3:::${lookup(
-#       var.s3_app,
-#       "${terraform.workspace}.bucket",
-#       var.s3_app["default.bucket"],
-#     )}-${terraform.workspace}/*"]
-#   }
-#
-#   principals {
-#     type = "AWS"
-#     identifiers = [module.cloudfront_origin_access_identity_app.iam_arn]
-#   }
-#
-#   statement {
-#     actions = ["s3:ListBucket"]
-#     resources = ["arn:aws:s3:::${lookup(
-#       var.s3_app,
-#       "${terraform.workspace}.bucket",
-#       var.s3_app["default.bucket"],
-#     )}-${terraform.workspace}"]
-#   }
-#
-#   principals {
-#     type = "AWS"
-#     identifiers = [module.cloudfront_origin_access_identity_app.iam_arn]
-#   }
-# }
+data "aws_iam_policy_document" "s3_app" {
+  statement {
+    actions = ["s3:GetObject"]
+    resources = ["arn:aws:s3:::${lookup(
+      var.s3_app,
+      "${terraform.workspace}.bucket",
+      var.s3_app["default.bucket"],
+    )}-${terraform.workspace}/*"]
+
+    principals {
+      type        = "AWS"
+      identifiers = [module.cloudfront_origin_access_identity_app.iam_arn]
+    }
+  }
+
+  statement {
+    actions = ["s3:ListBucket"]
+    resources = ["arn:aws:s3:::${lookup(
+      var.s3_app,
+      "${terraform.workspace}.bucket",
+      var.s3_app["default.bucket"],
+    )}-${terraform.workspace}"]
+
+    principals {
+      type        = "AWS"
+      identifiers = [module.cloudfront_origin_access_identity_app.iam_arn]
+    }
+  }
+}
 
 ## Run modules
 module "s3_app" {
@@ -54,7 +54,7 @@ module "s3_app" {
     "${terraform.workspace}.bucket",
     var.s3_app["default.bucket"],
   )}-${terraform.workspace}"
-  #policy = data.aws_iam_policy_document.s3_app.json
+  policy = data.aws_iam_policy_document.s3_app.json
 
   cors_rule = [
     {
