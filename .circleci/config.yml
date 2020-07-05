@@ -1,0 +1,160 @@
+version: 2.1
+
+commands:
+  terraform:
+    parameters:
+      command:
+        type: string
+      working_directory:
+        type: string
+    steps:
+      - run:
+          name: terraform << parameters.command >>
+          command: terraform << parameters.command >>
+          working_directory: << parameters.working_directory >>
+  init:
+    parameters:
+      working_directory:
+        type: string
+    steps:
+      - terraform:
+          command: init
+          working_directory: << parameters.working_directory >>
+  workspace:
+    parameters:
+      stage:
+        type: enum
+        enum: [default, production]
+      working_directory:
+        type: string
+    steps:
+      - terraform:
+          command: workspace select << parameters.stage >>
+          working_directory: << parameters.working_directory >>
+
+executors:
+  terraform:
+    parameters:
+      version:
+        type: string
+    docker:
+      - image: hashicorp/terraform:<< parameters.version >>
+    working_directory: ~/project
+
+jobs:
+  validate:
+    parameters:
+      working_directory:
+        type: string
+      stage:
+        type: enum
+        enum: [default, production]
+    executor:
+      name: terraform
+      version: 0.12.28
+    steps:
+      - checkout
+      - init:
+          working_directory: << parameters.working_directory >>
+      - workspace:
+          stage: << parameters.stage >>
+          working_directory: << parameters.working_directory >>
+      - terraform:
+          command: validate
+          working_directory: << parameters.working_directory >>
+      - terraform:
+          command: fmt -write=false -diff -check
+          working_directory: << parameters.working_directory >>
+  plan:
+    parameters:
+      working_directory:
+        type: string
+      stage:
+        type: enum
+        enum: [default, production]
+    executor:
+      name: terraform
+      version: 0.12.28
+    steps:
+      - checkout
+      - init:
+          working_directory: << parameters.working_directory >>
+      - workspace:
+          stage: << parameters.stage >>
+          working_directory: << parameters.working_directory >>
+      - terraform:
+          command: plan -out .terraform/terraform_<< parameters.stage >>.tfplan
+          working_directory: << parameters.working_directory >>
+      - persist_to_workspace:
+          root: << parameters.working_directory >>
+          paths:
+            - .terraform
+  apply:
+    parameters:
+      working_directory:
+        type: string
+      stage:
+        type: enum
+        enum: [default, production]
+        default: default
+    executor:
+      name: terraform
+      version: 0.12.28
+    steps:
+      - checkout
+      - attach_workspace:
+          at: << parameters.working_directory>>
+      - workspace:
+          stage: << parameters.stage >>
+          working_directory: << parameters.working_directory >>
+      - terraform:
+          command: apply -auto-approve .terraform/terraform_<< parameters.stage >>.tfplan
+          working_directory: << parameters.working_directory >>
+
+workflows:
+  deploy:
+    jobs:
+      - validate:
+          name: validate_global
+          working_directory: environments/global
+          stage: default
+          filters:
+            branches:
+              only: [master]
+      - validate:
+          name: validate_production
+          working_directory: environments/besidethemusic
+          stage: production
+          filters:
+            branches:
+              only: [master]
+      - plan:
+          name: plan_global
+          working_directory: environments/global
+          stage: default
+          filters:
+            branches:
+              only: [master]
+      - plan:
+          name: plan_production
+          working_directory: environments/besidethemusic
+          stage: production
+          filters:
+            branches:
+              only: [master]
+      - apply:
+          name: apply_global
+          working_directory: environments/global
+          stage: default
+          requires: [validate_global, plan_global]
+          filters:
+            branches:
+              only: [master]
+      - apply:
+          name: apply_production
+          working_directory: environments/besidethemusic
+          stage: production
+          requires: [validate_production, plan_production]
+          filters:
+            branches:
+              only: [master]
