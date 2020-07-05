@@ -1,3 +1,5 @@
+[![CircleCI](https://circleci.com/gh/yuzoiwasaki/besidethemusic-terraform.svg?style=svg)](https://circleci.com/gh/yuzoiwasaki/besidethemusic-terraform)
+
 # besidethemusic-terraform
 
 ## Setup
