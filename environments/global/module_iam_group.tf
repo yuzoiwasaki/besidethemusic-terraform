@@ -1,8 +1,8 @@
 data "aws_iam_policy_document" "deployment_group" {
   statement {
-    effect    = "Allow"
+    effect = "Allow"
 
-    actions   = [
+    actions = [
       "cloudfront:CreateInvalidation",
       "s3:ListBucket",
       "s3:GetObject*",
