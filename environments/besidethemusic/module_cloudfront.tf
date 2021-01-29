@@ -7,10 +7,6 @@ locals {
   }
 }
 
-#####################################
-# For app
-#####################################
-## Set variables
 variable "cloudfront_app" {
   type = map(string)
 
@@ -26,7 +22,6 @@ variable "cloudfront_app" {
   }
 }
 
-# Run modules
 module "cloudfront_app" {
   source = "git@github.com:yuzoiwasaki/aws-terraform-modules.git//cloudfront"
 

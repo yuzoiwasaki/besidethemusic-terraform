@@ -1,7 +1,3 @@
-#####################################
-# For app
-#####################################
-## Set variables
 variable "s3_app" {
   type = map(string)
 
@@ -45,7 +41,6 @@ data "aws_iam_policy_document" "s3_app" {
   }
 }
 
-## Run modules
 module "s3_app" {
   source = "git@github.com:yuzoiwasaki/aws-terraform-modules.git//s3"
 

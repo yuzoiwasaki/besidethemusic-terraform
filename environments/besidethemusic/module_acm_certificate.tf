@@ -1,7 +1,3 @@
-#####################################
-# For besidethemusic.tokyo cloudfront
-#####################################
-## Set variables
 variable "acm_certificate_besidethemusic_tokyo" {
   type = map(string)
 
@@ -11,7 +7,6 @@ variable "acm_certificate_besidethemusic_tokyo" {
   }
 }
 
-## Run module
 module "acm_certificate_besidethemusic_tokyo" {
   source = "git@github.com:yuzoiwasaki/aws-terraform-modules.git//acm_certificate"
 

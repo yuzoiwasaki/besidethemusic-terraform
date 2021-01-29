@@ -1,7 +1,3 @@
-#####################################
-# For besidethemusic.tokyo
-#####################################
-
 module "route53_record_cloudfront_besidethemusic_tokyo_acm_1" {
   source  = "git@github.com:yuzoiwasaki/aws-terraform-modules.git//route53_record"
   zone_id = module.route53_zone_app.route53_zone_id
