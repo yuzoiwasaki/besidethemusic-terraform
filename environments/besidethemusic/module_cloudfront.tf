@@ -11,14 +11,14 @@ module "cloudfront_app" {
   source = "git@github.com:yuzoiwasaki/aws-terraform-modules.git//cloudfront"
 
   comment = "besidethemusic.tokyo"
-  aliases = "besidethemusic.tokyo"
+  aliases = ["besidethemusic.tokyo"]
 
   default_root_object = "index.html"
 
   origins = [
     {
       domain_name = "besidethemusic-production.s3-website-ap-northeast-1.amazonaws.com"
-      origin_id = "besidethemusic-production"
+      origin_id   = "besidethemusic-production"
       custom_origin_config = [
         merge(
           local.cloudfront_base_custom_origin_config,
@@ -44,10 +44,10 @@ module "cloudfront_app" {
 
   default_cache_behavior = [
     {
-      allowed_methods = ["GET", "HEAD"]
-      cached_methods  = ["GET", "HEAD"]
+      allowed_methods  = ["GET", "HEAD"]
+      cached_methods   = ["GET", "HEAD"]
       target_origin_id = "besidethemusic-production"
-      compress = true
+      compress         = true
       forwarded_values = [
         {
           query_string = false
@@ -68,8 +68,8 @@ module "cloudfront_app" {
 
   viewer_certificate = [
     {
-      acm_certificate_arn = "arn:aws:acm:us-east-1:192619379047:certificate/e90bb546-4813-4cef-b838-c41380d3a3e3"
-      ssl_support_method = "sni-only"
+      acm_certificate_arn      = "arn:aws:acm:us-east-1:192619379047:certificate/e90bb546-4813-4cef-b838-c41380d3a3e3"
+      ssl_support_method       = "sni-only"
       minimum_protocol_version = "TLSv1"
     },
   ]
