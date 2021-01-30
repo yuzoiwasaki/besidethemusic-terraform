@@ -1,12 +1,3 @@
-locals {
-  cloudfront_base_custom_origin_config = {
-    http_port              = 80
-    https_port             = 443
-    origin_protocol_policy = "https-only"
-    origin_ssl_protocols   = ["TLSv1", "TLSv1.1", "TLSv1.2"]
-  }
-}
-
 module "cloudfront_app" {
   source = "git@github.com:yuzoiwasaki/aws-terraform-modules.git//cloudfront"
 
@@ -20,15 +11,13 @@ module "cloudfront_app" {
       domain_name = "besidethemusic-production.s3-website-ap-northeast-1.amazonaws.com"
       origin_id   = "besidethemusic-production"
       custom_origin_config = [
-        merge(
-          local.cloudfront_base_custom_origin_config,
-          {
-            "origin_protocol_policy" = "http-only"
-          },
-          {
-            "origin_read_timeout" = 60
-          },
-        ),
+        {
+          http_port              = 80
+          https_port             = 443
+          origin_ssl_protocols   = ["TLSv1", "TLSv1.1", "TLSv1.2"]
+          origin_protocol_policy = "http-only"
+          origin_read_timeout    = 60
+        },
       ]
     },
   ]
