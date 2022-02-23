@@ -18,7 +18,7 @@ commands:
         type: string
     steps:
       - terraform:
-          command: init
+          command: init --reconfigure
           working_directory: << parameters.working_directory >>
   workspace:
     parameters:
