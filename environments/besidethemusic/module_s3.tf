@@ -21,7 +21,7 @@ data "aws_iam_policy_document" "s3_app" {
 }
 
 module "s3_app" {
-  source = "git@github.com:yuzoiwasaki/aws-terraform-modules.git//s3?ref=v0.14.11"
+  source = "git@github.com:yuzoiwasaki/aws-terraform-modules.git//s3?ref=v0.15.5"
 
   bucket = "besidethemusic-${terraform.workspace}"
   policy = data.aws_iam_policy_document.s3_app.json
