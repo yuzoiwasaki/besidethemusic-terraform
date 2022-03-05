@@ -1,5 +1,5 @@
 module "acm_certificate_validation_besidethemusic_tokyo" {
-  source          = "git@github.com:yuzoiwasaki/aws-terraform-modules.git//acm_certificate_validation?ref=v0.15.5"
+  source          = "git@github.com:yuzoiwasaki/aws-terraform-modules.git//acm_certificate_validation?ref=v1.0.11"
   acm_region      = "us-east-1"
   certificate_arn = module.acm_certificate_besidethemusic_tokyo.acm_certificate_arn
   validation_record_fqdns = [

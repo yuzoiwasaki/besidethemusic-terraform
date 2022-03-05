@@ -51,7 +51,7 @@ jobs:
         enum: [default, production]
     executor:
       name: terraform
-      version: 0.15.5
+      version: 1.0.11
     steps:
       - checkout
       - init:
@@ -74,7 +74,7 @@ jobs:
         enum: [default, production]
     executor:
       name: terraform
-      version: 0.15.5
+      version: 1.0.11
     steps:
       - checkout
       - init:
@@ -99,7 +99,7 @@ jobs:
         default: default
     executor:
       name: terraform
-      version: 0.15.5
+      version: 1.0.11
     steps:
       - checkout
       - attach_workspace:
