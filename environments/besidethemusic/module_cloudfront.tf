@@ -1,5 +1,5 @@
 module "cloudfront_app" {
-  source = "git@github.com:yuzoiwasaki/aws-terraform-modules.git//cloudfront?ref=v1.0.11"
+  source = "git@github.com:yuzoiwasaki/aws-terraform-modules.git//cloudfront?ref=v1.1.7"
 
   comment = "besidethemusic.tokyo"
   aliases = ["besidethemusic.tokyo"]

@@ -14,7 +14,7 @@ data "aws_iam_policy_document" "deployment_group" {
 }
 
 module "iam_deployment_group" {
-  source = "git@github.com:yuzoiwasaki/aws-terraform-modules.git//iam_group?ref=v1.0.11"
+  source = "git@github.com:yuzoiwasaki/aws-terraform-modules.git//iam_group?ref=v1.1.7"
   name   = "deployment"
   policy = data.aws_iam_policy_document.deployment_group.json
 
